@@ -1,6 +1,7 @@
 package com.example.edwin.selokanmonitoringsystem;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,7 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-public class MainActivity extends ActionBarActivity  {
+public class MainActivity extends ActionBarActivity {
 
     de.hdodenhof.circleimageview.CircleImageView circle1;
 
@@ -21,7 +22,7 @@ public class MainActivity extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Override Action Bar Color
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.rgb(47,79,79)));
 
         circle1 = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.image1);

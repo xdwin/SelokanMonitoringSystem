@@ -43,6 +43,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.edwin.selokanmonitoringsystem.PosActivity" />
         </activity>
+        <service
+            android:name=".DetailService"
+            android:label="Detail Service" >
+        </service>
     </application>
 
 </manifest>

@@ -88,9 +88,9 @@ class Chapter{
         SelokanXML xml = new SelokanXML();
 //        int posTag = xml.countTag(xml.getXML(), "pos");
 //        Log.i("COUNT", posTag+"");
-        ArrayList<String> arr = xml.getAttributeContent(xml.getXML(), "pos", "nomor");
+//        ArrayList<String> arr = xml.getAttributeContent(xml.getXML(), "pos", "nomor");
         ArrayList<String> arr2 = xml.populateDataFromPos(xml.getXML());
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 0; i < arr2.size(); i++) {
             String[] split = arr2.get(i).split(",");
             Chapter chapter = new Chapter();
             chapter.chapterName = "Pos " + split[0];
@@ -105,6 +105,7 @@ class Chapter{
             else
                 chapter.chapterStatus = "OK";
             chapterList.add(chapter);
+            Log.i("Ketinggian",chapter.chapterKetinggian+"");
         }
         return chapterList;
     }
@@ -253,17 +254,17 @@ class SelokanXML{
             while (eventType != XmlPullParser.END_DOCUMENT){
                 if(eventType == XmlPullParser.START_TAG && xml.getName().equals("pos")){
                     data += xml.getAttributeValue(null, "nomor");
-                    Log.i("eve",xml.getName());
+//                    Log.i("eve",xml.getName());
                 }
                 else if (eventType == XmlPullParser.START_TAG && !xml.getName().equals("pos")
                         && !xml.getName().equals("selokan")){
-                    Log.i("ISI1",xml.getName());
+//                    Log.i("ISI1",xml.getName());
                     xml.next();
                     data += ","+ xml.getText();
-                    Log.i("ISI",xml.getName()+" "+xml.getText());
+//                    Log.i("ISI",xml.getName()+" "+xml.getText());
                 }
                 else if (eventType == XmlPullParser.END_TAG && xml.getName().equals("pos")){
-                    Log.i("ANNNON",xml.getName());
+//                    Log.i("ANNNON",xml.getName());
                     arr.add(data);
                     data = "";
                 }
