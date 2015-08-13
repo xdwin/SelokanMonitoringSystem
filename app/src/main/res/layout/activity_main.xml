@@ -42,7 +42,6 @@
                 app:border_width="2dp"
                 app:border_color="#9ACD32"
                 android:clickable="true"
-                android:onClick="toMonitoring"
                 android:id="@+id/image1">
             </de.hdodenhof.circleimageview.CircleImageView>
             <TextView

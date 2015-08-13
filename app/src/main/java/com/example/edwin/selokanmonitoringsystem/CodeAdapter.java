@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -58,11 +59,17 @@ public class CodeAdapter extends BaseAdapter {
 
         TextView chapterName = (TextView)convertView.findViewById(R.id.textView1);
         TextView chapterDescription = (TextView)convertView.findViewById(R.id.textView2);
+        ImageView chapterImage = (ImageView)convertView.findViewById(R.id.imageView1);
 
         Chapter chapter = chapterList.get(position);
 
         chapterName.setText(chapter.chapterName);
         chapterDescription.setText(chapter.chapterLocation);
+        if (!chapter.chapterStatus.equalsIgnoreCase("OK")){
+            chapterImage.setImageResource(R.mipmap.ic_launcherwarning);
+        }
+        else
+            chapterImage.setImageResource(R.mipmap.ic_launcher);
 
         return convertView;
     }
@@ -76,6 +83,7 @@ class Chapter{
     String chapterKetinggian;
     String chapterArus;
     String chapterStatus;
+    String batasKetinggian;
     List<Chapter> chapterList;
     public List<Chapter> getDataForListView(){
         chapterList = new ArrayList<>();
@@ -97,15 +105,16 @@ class Chapter{
             chapter.chapterLocation = split[1];
             chapter.chapterKetinggian = split[2];
             chapter.chapterArus = split[3];
+            chapter.batasKetinggian = split[4];
             //Baru handle ketinggian air
-            if (Integer.parseInt(chapter.chapterKetinggian) < 3){
+            if (Integer.parseInt(chapter.chapterKetinggian) < Integer.parseInt(chapter.batasKetinggian)){
                 chapter.chapterStatus = "Air mendekati permukaan Selokan";
                 //Handle Notification
             }
             else
                 chapter.chapterStatus = "OK";
             chapterList.add(chapter);
-            Log.i("Ketinggian",chapter.chapterKetinggian+"");
+            Log.i("Ketinggian",chapter.chapterKetinggian+" With Batas = " + chapter.batasKetinggian);
         }
         return chapterList;
     }
@@ -245,6 +254,7 @@ class SelokanXML{
          * data[2] = Ketinggian air pada pos
          * data[3] = Arus air pada pos
          * data[4] = Status pos
+         * data[5] = Batas Ketinggian
          */
         ArrayList<String> arr = new ArrayList<String>();
 

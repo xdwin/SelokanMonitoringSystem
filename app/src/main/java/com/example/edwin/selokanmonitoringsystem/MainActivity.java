@@ -2,6 +2,9 @@ package com.example.edwin.selokanmonitoringsystem;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,36 +14,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
 
     de.hdodenhof.circleimageview.CircleImageView circle1;
+    ConnectChecker connectChecker = new ConnectChecker();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        circle1 = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.image1);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.rgb(47, 79, 79)));
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.rgb(47,79,79)));
-
-        circle1 = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.image1);
-        circle1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (circle1.getBorderWidth() == 2) {
-                    circle1.setBorderWidth(6);
+            circle1.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (connectChecker.isConnected(getApplicationContext())) {
+                        if (circle1.getBorderWidth() == 2) {
+                            circle1.setBorderWidth(6);
+                        }
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+            circle1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (connectChecker.isConnected(getApplicationContext())) {
+                        Intent intent = new Intent(getApplicationContext(), PosActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(),"Turn On Your Internet", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        circle1.setBorderWidth(2);
+        if (circle1.getBorderWidth()!=2)
+            circle1.setBorderWidth(2);
     }
 
     @Override
@@ -67,8 +89,6 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    public void toMonitoring(View v){
-        Intent intent = new Intent(this, PosActivity.class);
-        startActivity(intent);
-    }
+
+
 }

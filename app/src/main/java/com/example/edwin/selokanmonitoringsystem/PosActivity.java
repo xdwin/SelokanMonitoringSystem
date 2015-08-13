@@ -13,6 +13,8 @@ import android.widget.ListView;
 
 public class PosActivity extends ActionBarActivity {
 
+    ConnectChecker connectChecker = new ConnectChecker();
+
     protected ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,28 +32,30 @@ public class PosActivity extends ActionBarActivity {
         final CodeAdapter codeAdapter = new CodeAdapter();
         listView.setAdapter(codeAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Chapter chapter = codeAdapter.chapterList.get(position);
+        if (connectChecker.isConnected(this)) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Chapter chapter = codeAdapter.chapterList.get(position);
 //                String nama = chapter.chapterName;
 //                String alamat = chapter.chapterLocation;
 //                String ketinggian = chapter.chapterKetinggian;
 //                String arus = chapter.chapterArus;
 //                String status = chapter.chapterStatus;
 
-                Intent intent = new Intent(getApplicationContext(),DetailActivity.class);
-                Bundle bundle = new Bundle();
+                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                    Bundle bundle = new Bundle();
 //                bundle.putString("nama", nama);
 //                bundle.putString("alamat", alamat);
 //                bundle.putString("ketinggian", ketinggian);
 //                bundle.putString("arus", arus);
 //                bundle.putString("status", status);
-                bundle.putInt("position",position);
-                intent.putExtra("bundle", bundle);
-                startActivity(intent);
-            }
-        });
+                    bundle.putInt("position", position);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
 
