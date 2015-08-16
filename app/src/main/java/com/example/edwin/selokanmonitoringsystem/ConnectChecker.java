@@ -23,7 +23,7 @@ public class ConnectChecker {
             if (wifiNetwork != null && wifiNetwork.isConnected()){
                 result.add("Wifi");
             }
-            if (mobileNetwork != null && wifiNetwork.isConnected()){
+            if (mobileNetwork != null && mobileNetwork.isConnected()){
                 result.add("mobile");
             }
         }
@@ -32,9 +32,11 @@ public class ConnectChecker {
         }
 
         if (result.size() > 0){
+            Log.i("Isi Array", result.get(0));
             return true;
         }
-        else
+        else {
             return false;
+        }
     }
 }

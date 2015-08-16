@@ -74,10 +74,10 @@ public class DetailActivity extends ActionBarActivity {
                 textStatus = (TextView) findViewById(R.id.textStatus);
                 textStatus.setText(textStatus.getText().toString().substring(0,8) + " " + status);
                 Log.i("Dijalankan", "onCreate");
-                handler.postDelayed(this,1000);
+                handler.postDelayed(this,4000);
             }
         };
-        handler.postDelayed(r,1000);
+        handler.postDelayed(r,4000);
 
 
         nama = chapter.chapterName;

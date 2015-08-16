@@ -65,7 +65,7 @@ public class CodeAdapter extends BaseAdapter {
 
         chapterName.setText(chapter.chapterName);
         chapterDescription.setText(chapter.chapterLocation);
-        if (!chapter.chapterStatus.equalsIgnoreCase("OK")){
+        if (!chapter.chapterStatus.equalsIgnoreCase("Normal")){
             chapterImage.setImageResource(R.mipmap.ic_launcherwarning);
         }
         else
@@ -87,16 +87,8 @@ class Chapter{
     List<Chapter> chapterList;
     public List<Chapter> getDataForListView(){
         chapterList = new ArrayList<>();
-//        for (int i = 0; i < 10; i++){
-//            Chapter chapter = new Chapter();
-//            chapter.chapterName = "Pos"+i;
-//            chapter.chapterDescription = "Jalan ke "+i;
-//            chapterList.add(chapter);
-//        }
+
         SelokanXML xml = new SelokanXML();
-//        int posTag = xml.countTag(xml.getXML(), "pos");
-//        Log.i("COUNT", posTag+"");
-//        ArrayList<String> arr = xml.getAttributeContent(xml.getXML(), "pos", "nomor");
         ArrayList<String> arr2 = xml.populateDataFromPos(xml.getXML());
         for (int i = 0; i < arr2.size(); i++) {
             String[] split = arr2.get(i).split(",");
@@ -107,12 +99,19 @@ class Chapter{
             chapter.chapterArus = split[3];
             chapter.batasKetinggian = split[4];
             //Baru handle ketinggian air
-            if (Integer.parseInt(chapter.chapterKetinggian) < Integer.parseInt(chapter.batasKetinggian)){
-                chapter.chapterStatus = "Air mendekati permukaan Selokan";
+            if (Integer.parseInt(chapter.chapterKetinggian) < Integer.parseInt(chapter.batasKetinggian)
+                    && Integer.parseInt(chapter.chapterArus) < 3){
+                chapter.chapterStatus = "Air mendekati permukaan Selokan & Air tidak mengalir";
                 //Handle Notification
             }
+            else if (Integer.parseInt(chapter.chapterKetinggian) < Integer.parseInt(chapter.batasKetinggian)){
+                chapter.chapterStatus = "Air mendekati permukaan Selokan";
+            }
+            else if (Integer.parseInt(chapter.chapterArus) < 3){
+                chapter.chapterStatus = "Air tidak mengalir";
+            }
             else
-                chapter.chapterStatus = "OK";
+                chapter.chapterStatus = "Normal";
             chapterList.add(chapter);
             Log.i("Ketinggian",chapter.chapterKetinggian+" With Batas = " + chapter.batasKetinggian);
         }
@@ -139,7 +138,7 @@ class SelokanXML{
         StrictMode.setThreadPolicy(policy);
 
         try {
-            InputStream input = new URL("http://codalight.in/tset/selokan.xml").openStream();
+            InputStream input = new URL("http://data.codalight.in/selokan/selokan.xml").openStream();
             factory = XmlPullParserFactory.newInstance();
             xml = factory.newPullParser();
             xml.setInput(new InputStreamReader(input));
